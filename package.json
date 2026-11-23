@@ -2,13 +2,21 @@
   "name": "casa-italy",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "postbuild": "pnpm package:standalone",
+    "start": "node .next/standalone/server.js",
+    "package:standalone": "node scripts/package-standalone.mjs",
+    "test": "node --test tests/carousel.math.test.mjs",
     "lint": "eslint"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.15.1",
     "next": "16.4.6",
     "react": "19.3.0",
     "react-dom": "19.3.0"

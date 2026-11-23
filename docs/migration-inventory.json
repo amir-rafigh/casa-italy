@@ -1,0 +1,215 @@
+{
+  "source": "D:\\Project\\3d-menu-ui",
+  "destination": "D:\\Project\\casa-italy",
+  "routes": [
+    {
+      "source": "/casaitaly",
+      "destination": "/"
+    },
+    {
+      "source": "/casaitaly/landing",
+      "destination": "/landing"
+    }
+  ],
+  "files": [
+    {
+      "source": "app/casaitaly/page.tsx",
+      "destination": "app/page.tsx",
+      "sha256": "5F78A695CB581AF54B6BC0BCA737ED550905D2C9BD2D6E0E56A61F39FB268780"
+    },
+    {
+      "source": "app/casaitaly/landing/page.tsx",
+      "destination": "app/landing/page.tsx",
+      "sha256": "F10978D29E98C1F5D24730541B8A3454D53CDF12D3BFFFD6F064C2E54A5D842D"
+    },
+    {
+      "source": "app/globals.css",
+      "destination": "app/globals.css",
+      "sha256": "75E949906BFA4359416B098743DB3DC1D8E4D0D2622D4DF0BEDA717866251722"
+    },
+    {
+      "source": "components/shared/carousel/CarouselItem.tsx",
+      "destination": "components/shared/carousel/CarouselItem.tsx",
+      "sha256": "163D4E3C9B9232E7D97D2073834A30FEBA484BA73CEB8A15301DF359E3AF893C"
+    },
+    {
+      "source": "components/shared/carousel/CircularCarousel.tsx",
+      "destination": "components/shared/carousel/CircularCarousel.tsx",
+      "sha256": "8788DF97EC3544BBC851AD45F4E20F98206B76E22C58D14ABDAE8671B3A68B5A"
+    },
+    {
+      "source": "hooks/useCircularCarousel.ts",
+      "destination": "hooks/useCircularCarousel.ts",
+      "sha256": "13E29F63889DA90C0207C8E1F7E13CF4D296522376815B7B4462AC42E897FAE2"
+    },
+    {
+      "source": "lib/carousel/carousel.config.ts",
+      "destination": "lib/carousel/carousel.config.ts",
+      "sha256": "48F30DA2DDDF38ADBE98930CF806CC5264C535EEFAC1B401CE2731E53AAE15F5"
+    },
+    {
+      "source": "lib/carousel/carousel.math.ts",
+      "destination": "lib/carousel/carousel.math.ts",
+      "sha256": "B57DF0C3E85E8BDC6BA6D1DB3F8BAFBF5F904E6B69896BF05EB9742E2FE1BB0C"
+    },
+    {
+      "source": "types/carousel.ts",
+      "destination": "types/carousel.ts",
+      "sha256": "8C3EB29B6079CAF400A998CCCF7C4B177A0AFFDB349E5C4E783576A59EC74C79"
+    },
+    {
+      "source": "types/product.ts",
+      "destination": "types/product.ts",
+      "sha256": "49B819539782D27CB2F6CD213C69B7F0A8BAFA58786DFD8062C5F1BA8EEA8329"
+    },
+    {
+      "source": "data/pizza/cavasaitaly/products.ts",
+      "destination": "data/pizza/cavasaitaly/products.ts",
+      "sha256": "681A24294B0B02F4CFA49C875566792A0A37B6E4747580DADBCEB8919CAA1D3C"
+    },
+    {
+      "source": "tests/carousel.math.test.mjs",
+      "destination": "tests/carousel.math.test.mjs",
+      "sha256": "2856EFA29405C9A8FBF7CE55A421BAA97D9148EF9EC7EDF3E2E631A64D163B60"
+    },
+    {
+      "source": "public/fonts/Vazirmatn-variable.woff2",
+      "destination": "public/fonts/Vazirmatn-variable.woff2",
+      "sha256": "4E3FA217D38FDAFC1FEA4414CEB58CA5E662CF0AB5FA735A8C8C20E8B42CAD92"
+    },
+    {
+      "source": "public/fonts/Vazirmatn-OFL.txt",
+      "destination": "public/fonts/Vazirmatn-OFL.txt",
+      "sha256": "49AFD4E4BFB3728AD16B7A2882AE0E36BF70E44C1C92DE76623CC8CB21D8579F"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/logo/instagram-profile.png",
+      "destination": "public/brands/pizza/cavasaitaly/logo/instagram-profile.png",
+      "sha256": "C1A4B900E1D5D08B36200B28C8C819EB8776D6C11DA14CC8F337388FF8F13C0A"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/landing/casa-kitchen.mp4",
+      "destination": "public/brands/pizza/cavasaitaly/landing/casa-kitchen.mp4",
+      "sha256": "1621163FA549F6A11846D9CAE4EEA76D7FDA15CBC7EAB78249F20BD2FEDF43ED"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/landing/casa-kitchen-poster.jpg",
+      "destination": "public/brands/pizza/cavasaitaly/landing/casa-kitchen-poster.jpg",
+      "sha256": "5507311A1B726D932CDB096804C5BC5E3B79468BD5DCAD0A45E94414C4F74F30"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/CasaIcon.tsx",
+      "destination": "components/pizza/cavasaitaly/CasaIcon.tsx",
+      "sha256": "A571CA7F3E3F0264666D539A7C8B22443BBBA50D3568F40DA25FFB5EA804C351"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/CasaItalyMenu.module.css",
+      "destination": "components/pizza/cavasaitaly/CasaItalyMenu.module.css",
+      "sha256": "3EE09438AADC49942A911E994C456C29E12BEA40944A44E455130FDF25A1A404"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/CasaItalyMenu.tsx",
+      "destination": "components/pizza/cavasaitaly/CasaItalyMenu.tsx",
+      "sha256": "2B766478C492F0E7F8E2D1BA66B7E1F6223176B96AE1CDE430FF999440C83526"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/landing/CasaLanding.module.css",
+      "destination": "components/pizza/cavasaitaly/landing/CasaLanding.module.css",
+      "sha256": "93FCC6D84E1F79627F6B6FE5FAC5F92842D7EE1EEADCC3E815ED0E21766470F2"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/landing/CasaLanding.tsx",
+      "destination": "components/pizza/cavasaitaly/landing/CasaLanding.tsx",
+      "sha256": "EAD64FEA2FA1CB0DD72008E9BFF425008B7BA04519B10AF8712A17CEBF7654BA"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/landing/HeroVideo.tsx",
+      "destination": "components/pizza/cavasaitaly/landing/HeroVideo.tsx",
+      "sha256": "8C1D67570EC755C67CF957F7A8FDF9842179FBB3F5EB307532E3BAE39833A665"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/landing/LandingIcon.tsx",
+      "destination": "components/pizza/cavasaitaly/landing/LandingIcon.tsx",
+      "sha256": "49F6B2E55507A7846A0D24C2CCD76BF4D67A6BDF72444C8734FE476D5D14E368"
+    },
+    {
+      "source": "components/pizza/cavasaitaly/landing/LandingPanels.tsx",
+      "destination": "components/pizza/cavasaitaly/landing/LandingPanels.tsx",
+      "sha256": "F8742194517A9C65E8CA7687A55BE0A2267D386DD7F67488D5056381471C0127"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/products/cutouts/bacon.webp",
+      "destination": "public/brands/pizza/cavasaitaly/products/cutouts/bacon.webp",
+      "sha256": "3B1F75429CC026C2A4075BB648992845FFE89B67A26CD85D64D7EA67650E4B22"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/products/cutouts/brisket.webp",
+      "destination": "public/brands/pizza/cavasaitaly/products/cutouts/brisket.webp",
+      "sha256": "90C851FFE0576A9B4983C88BE1AAB8FD71E7D3049E638D713423162E2AF84419"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/products/cutouts/chicken.webp",
+      "destination": "public/brands/pizza/cavasaitaly/products/cutouts/chicken.webp",
+      "sha256": "FC4570D171B0E21E04AAB5F6173818713065E6E2DDFB6054EFF1F8547F0B5FAD"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/products/cutouts/eggplant.webp",
+      "destination": "public/brands/pizza/cavasaitaly/products/cutouts/eggplant.webp",
+      "sha256": "399C901098549471BBADD44961A5768D0CE4B54F3366E23190BDF0DF2EFE157A"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/products/cutouts/meatball.webp",
+      "destination": "public/brands/pizza/cavasaitaly/products/cutouts/meatball.webp",
+      "sha256": "FF20169C412F22600E7DD0E3EEF6B87CBEA7CFF79540E1D78EBFA1E3333BAF7B"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/products/cutouts/pesto.webp",
+      "destination": "public/brands/pizza/cavasaitaly/products/cutouts/pesto.webp",
+      "sha256": "5F9CEC9463EB58AB9447961817F0D60F568645BBD0343692E53A21C72704AC38"
+    },
+    {
+      "source": "public/brands/pizza/cavasaitaly/products/cutouts/steak.webp",
+      "destination": "public/brands/pizza/cavasaitaly/products/cutouts/steak.webp",
+      "sha256": "28559666294DF3D26C54351F56EF9F464DDC6DCB2958A905D662FA62CA995D68"
+    }
+  ],
+  "mergedFiles": [
+    "app/layout.tsx",
+    "app/casaitaly/layout.tsx",
+    "next.config.ts"
+  ],
+  "sharedDependencies": [
+    "components/shared/carousel/*",
+    "hooks/useCircularCarousel.ts",
+    "lib/carousel/*",
+    "types/*",
+    "public/fonts/*"
+  ],
+  "runtimeDependencies": [
+    "next@16.4.6",
+    "react@19.3.0",
+    "react-dom@19.3.0",
+    "gsap@^3.15.1",
+    "@gsap/react@^2.1.2"
+  ],
+  "configuration": [
+    "standalone output",
+    "cacheComponents and partialPrefetching retained",
+    "Tailwind loader excludes CSS Modules",
+    "root @/* alias retained",
+    "Vazirmatn local font and Persian RTL wrapper retained"
+  ],
+  "environmentVariables": [],
+  "apiRoutes": [],
+  "risks": [
+    "Reservation and feedback remain browser-local demos; existing records do not transfer between origins.",
+    "Public and .next/static must be copied into standalone output.",
+    "Build on Linux for Linux hosting; Windows junctions and native modules are platform-specific.",
+    "Passenger startup and CloudLinux limits require remote validation."
+  ],
+  "excluded": [
+    "Baklava and Ghobadi code/assets/API/database/pg",
+    "unused Casa screenshot source images and PNG cutout originals",
+    "source node_modules, caches, lockfile, secrets"
+  ]
+}
