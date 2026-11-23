@@ -21,7 +21,7 @@ export function CasaItalyMenu({ products }: { products: readonly CasaProduct[] }
   return <div className={styles.page}>
     <div className={styles.topline} aria-hidden="true"><i /><i /><i /></div>
     <header className={styles.header}>
-      <Link href="/landing" className={styles.brand} aria-label="بازگشت به صفحهٔ اصلی کازا ایتالی" title="بازگشت به صفحهٔ اصلی">
+      <Link href="/" className={styles.brand} aria-label="بازگشت به صفحهٔ اصلی کازا ایتالی" title="بازگشت به صفحهٔ اصلی">
         <span className={styles.logoWindow}><Image src="/brands/pizza/cavasaitaly/logo/instagram-profile.png" width={887} height={474} alt="CASA ITALY" className={styles.logo} preload /></span>
         <span className={styles.brandCaption}>خانهٔ طعم‌های ایتالیایی<span lang="en" dir="ltr">NAPOLITAN PIZZA & PASTA</span></span>
       </Link>
