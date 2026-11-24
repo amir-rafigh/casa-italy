@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
+  redirects() {
+    return [{ source: "/Menu", destination: "/", permanent: true }];
+  },
   turbopack: {
     rules: {
       "*.css": {

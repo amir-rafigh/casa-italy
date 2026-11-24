@@ -23,6 +23,7 @@ for (const route of ["/", "/landing"]) {
   assert.doesNotMatch(html, /href="\/casaitaly(?:\/|"|#)/);
   assert.doesNotMatch(html, /Create Next App|Menu Demo Platform/);
   assert.match(html, route === "/" ? /MEATBALL/ : /BENVENUTI A CASA/);
+  assert.match(html, route === "/" ? /href="\/landing"/ : /href="\/"/);
   const assets = [...html.matchAll(/(?:href|src)="(\/_next\/[^"<>]+)"/g)].map(match => match[1].replaceAll("&amp;", "&"));
   for (const asset of new Set(assets)) await request(asset);
   for (const link of html.matchAll(/href="(\/[^"<>]*)"/g)) {
@@ -40,5 +41,20 @@ for (const filename of await readdir(path.join(root, "public"), { recursive: tru
 }
 
 await request("/brands/pizza/cavasaitaly/landing/casa-kitchen.mp4", 206, { headers: { Range: "bytes=0-1023" } });
+const legacyMenu = await request("/Menu?table=12", 308, { redirect: "manual" });
+assert.equal(new URL(legacyMenu.headers.get("location"), origin).pathname, "/");
+assert.equal(new URL(legacyMenu.headers.get("location"), origin).search, "?table=12");
+for (const filename of ["Casa-Italy-Proposal-Updated.pdf", "Casa-Italy-Architecture-and-Implementation-Plan-FA.pdf"]) {
+  await request(`/contract/${filename}`, 404);
+}
 for (const route of ["/casaitaly", "/casaitaly/landing", "/baklava", "/ghobadi", "/api/ghobadi"]) await request(route, 404);
+await request('/reservations');
+await request('/admin/login');
+await request('/api/admin/menu',401);
+await request('/api/reservations/mine',401);
+await request('/api/qr',401);
+const menu=await (await request('/api/menu')).json();
+assert.ok(menu.products.length>0);
+assert.ok(menu.products.every(product=>Number.isInteger(product.price)&&product.price>0));
+for(const route of ['/.env.local','/ops/scripts/db-seed.mjs','/docs/internal/Casa-Italy-Proposal-Updated.pdf','/output/pdf/Casa-Italy-MVP-Plan-FA.pdf']) await request(route,404);
 console.log(`Standalone smoke test passed: ${checked} HTTP checks (routes, public media, optimized images, chunks, fonts, links, video ranges, and excluded routes).`);

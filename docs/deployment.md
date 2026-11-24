@@ -1,6 +1,6 @@
 # Standalone deployment
 
-Use Node.js 24.x and pnpm 10.34.5. No database, API service, or application secrets are required by the migrated application.
+Use Node.js 24.x and pnpm 10.34.5. The MVP now requires PostgreSQL, DATABASE_URL, NEXTAUTH_SECRET, APP_ORIGIN and NEXTAUTH_URL. This document is deployment preparation only; hosting transfer is deferred until user approval. See local-mvp.md for local setup and verification.
 
 ## Build and package
 
@@ -34,8 +34,23 @@ Passenger handles server binding through its own reverse port binding mechanism.
 
 After future deployment, verify `/`, `/landing`, client navigation, optimized images, local fonts, video byte ranges, application startup/restart, writable Next.js image cache, and provider memory/process limits. Inspect Passenger logs for spawn or port-binding failures. None of these remote checks has been performed by this migration.
 
-## Preserved limitations
+## MVP data and operational scripts
 
-Reservations and feedback remain the original browser-local demos and do not contact the restaurant. Existing browser storage from another hostname or port does not transfer to the new origin. PostgreSQL and administration are intentionally unimplemented; add them later when their requirements exist.
+The packaged `ops/` folder contains SQL migrations, synthetic seed data and CLI scripts. It resolves pg from the parent standalone node_modules. Run those scripts from an activated Node24 environment with secrets supplied by the hosting environment. Do not run migration or seed from the web server startup path.
 
-The installed ESLint version reports a package deprecation warning during installation. It was retained to avoid an unrelated dependency upgrade. A single inline `react-hooks/purity` exception preserves the source reservation panel's existing per-render `Date.now()` cancellation cutoff. Animation code, timing, calculations, and cleanup are unchanged.
+- `node ops/scripts/db-check.mjs`: connectivity, server version and migration status.
+- `node ops/scripts/db-migrate.mjs`: checksum-verified, locked, transactional migrations.
+- `node ops/scripts/db-seed.mjs`: insert missing synthetic catalog/settings without overwriting administrator edits.
+- `node ops/scripts/admin-user.mjs`: explicitly provision an account; no default password.
+
+Before any future remote migration, inspect existing tables, permissions and the exact database target, then take a verified backup. Keep migration changes additive and retain the previous web release. A web rollback must not run automatic down migrations. Existing host data must not be reset or replaced by a local test dump.
+
+Dotenv files are removed from the standalone artifact. Supply secrets at runtime; never put them under public or public_html. On Linux, `node server.js` remains the startup entry. The local package.json start command reads `.env.local` only for laptop testing.
+
+The small pool defaults to three connections per web process. Passenger process count multiplied by pool size must fit the host database quota. The actual host's Node-to-PostgreSQL connection, resource limits and migration permissions must still be verified during the user-approved transfer.
+
+## Current feature boundaries
+
+Menu, reservation and administration data are now persistent PostgreSQL data. Feedback remains a browser-local demo. SMS, image uploads and real restaurant data are excluded from this phase. Browser reservation ownership is cookie-based; losing that cookie does not provide an automatic phone-based recovery flow.
+
+No MVP release, migration or seed has been run on the host in this local implementation task.

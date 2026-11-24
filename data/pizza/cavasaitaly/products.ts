@@ -2,6 +2,7 @@ import type { Product } from "@/types/product";
 
 export interface CasaProduct extends Product {
   englishName: string;
+  available?: boolean;
   ingredients: readonly string[];
 }
 

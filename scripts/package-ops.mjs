@@ -1,0 +1,11 @@
+import {cp,mkdir,access} from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const target=path.join(root,'.next','standalone','ops');
+await access(path.join(root,'.next','standalone','server.js'));
+for(const name of ['db/migrations','server/core']) await cp(path.join(root,name),path.join(target,name),{recursive:true});
+await mkdir(path.join(target,'data'),{recursive:true});await cp(path.join(root,'data/seed-menu.json'),path.join(target,'data/seed-menu.json'));
+await mkdir(path.join(target,'scripts'),{recursive:true});
+for(const name of ['db-migrate.mjs','db-seed.mjs','db-check.mjs','admin-user.mjs']) await cp(path.join(root,'scripts',name),path.join(target,'scripts',name));
+console.log('Private operational scripts packaged under standalone/ops. Environment files excluded.');

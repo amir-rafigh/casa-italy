@@ -12,6 +12,7 @@ const vazirmatn = localFont({
 });
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: false },
   title: "کازا ایتالی | یک برش از ایتالیا",
   description: "منوی پیتزاهای ناپولیتن کازا ایتالی؛ یک سفر کوچک به ایتالیا، در قلب اردبیل.",
 };

@@ -1,17 +1,6 @@
-import type { Metadata } from "next";
-import { CasaLanding } from "@/components/pizza/cavasaitaly/landing/CasaLanding";
-import { casaProducts } from "@/data/pizza/cavasaitaly/products";
-
-export const metadata: Metadata = {
-  title: "کازا ایتالی | به خانهٔ طعم‌های ایتالیایی خوش آمدید",
-  description: "یک برش از ایتالیا، سر میز شما. منوی کازا ایتالی، رزرو میز و ارتباط با ما در یک نگاه.",
-  robots: { index: false, follow: false },
-};
-
-export default function CasaLandingPage() {
-  const selection = ["meatball", "steak", "pesto"].flatMap(id =>
-    casaProducts.filter(product => product.id === id),
-  );
-
-  return <CasaLanding products={selection} />;
-}
+import {Suspense} from 'react';
+import {connection} from 'next/server';
+import {CasaItalyMenu} from '@/components/pizza/cavasaitaly/CasaItalyMenu';
+import {getMenu} from '@/server/data';
+async function Content(){await connection();return <CasaItalyMenu initialData={await getMenu()} />;}
+export default function Page(){return <Suspense fallback={<p style={{textAlign:'center',padding:40}}>در حال دریافت منو…</p>}><Content /></Suspense>;}

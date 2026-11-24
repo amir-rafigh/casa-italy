@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import type { CasaProduct } from "@/data/pizza/cavasaitaly/products";
+import type { MenuData } from "@/types/mvp";
+import { useLiveMenu } from "@/components/mvp/useLiveMenu";
 import { HeroVideo } from "./HeroVideo";
 import { LandingIcon, type LandingIconName } from "./LandingIcon";
 import { ContactPanel, FeedbackPanel, ReservationPanel } from "./LandingPanels";
@@ -16,7 +17,9 @@ const panels: { id: Panel; title: string; label: string; icon: LandingIconName }
   { id: "feedback", title: "نظرات و پیشنهادها", label: "نظرات و پیشنهادها", icon: "message" },
 ];
 
-export function CasaLanding({ products }: { products: readonly CasaProduct[] }) {
+export function CasaLanding({ initialData }: { initialData: MenuData }) {
+  const {data,error}=useLiveMenu(initialData);
+  const products=data.products.filter(p=>["meatball","steak","pesto"].includes(p.id));
   const [panel, setPanel] = useState<Panel | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const lastTrigger = useRef<HTMLElement | null>(null);
@@ -53,6 +56,7 @@ export function CasaLanding({ products }: { products: readonly CasaProduct[] }) 
     </header>
 
     <main>
+      {error && <p role="status">{error}</p>}
       <HeroVideo />
       <section className={styles.welcome} id="casa-welcome" aria-labelledby="casa-title">
         <p className={styles.eyebrow} lang="it" dir="ltr"><span />BENVENUTI A CASA<span /></p>
@@ -68,7 +72,7 @@ export function CasaLanding({ products }: { products: readonly CasaProduct[] }) 
         <div className={styles.pizzaGrid}>
           {products.map((product, index) => <Link href="/" className={`${styles.pizza} ${index === 0 ? styles.featuredPizza : ""}`} key={product.id} aria-label={`مشاهدهٔ ${product.name} و دیگر پیتزاها در منوی کازا`}>
             <div className={styles.pizzaVisual}><Image src={product.image} width={900} height={900} alt={product.imageAlt} sizes={index === 0 ? "(max-width: 700px) 67vw, 380px" : "(max-width: 700px) 45vw, 340px"} /></div>
-            <div className={styles.pizzaText}><span className={styles.pizzaEnglish} lang="en" dir="ltr">{product.englishName}</span><h3>{product.name}</h3><span className={styles.pizzaRule} />{index === 0 && <p>موزارلا، گوجه<br className={styles.mobileBreak} /> و ریحان تازه</p>}</div>
+            <div className={styles.pizzaText}><span className={styles.pizzaEnglish} lang="en" dir="ltr">{product.englishName}</span><h3>{product.name}</h3><span className={styles.pizzaRule} /><p>{new Intl.NumberFormat("fa-IR").format(product.price || 0)} تومان · آزمایشی {product.available === false && "· ناموجود"}</p>{index === 0 && <p>موزارلا، گوجه<br className={styles.mobileBreak} /> و ریحان تازه</p>}</div>
           </Link>)}
         </div>
       </section>
@@ -90,7 +94,7 @@ export function CasaLanding({ products }: { products: readonly CasaProduct[] }) 
       <div className={styles.sheetHeading}><div><p lang="en" dir="ltr">CASA ITALY</p><h2 id="casa-panel-title">{panels.find(item => item.id === panel)?.title}</h2></div><button type="button" className={styles.closeButton} aria-label="بستن پنجره" onClick={() => dialogRef.current?.close()}><LandingIcon name="close" /></button></div>
       <div className={styles.sheetContent} key={panel}>
         {panel === "reservation" && <ReservationPanel />}
-        {panel === "contact" && <ContactPanel onReserve={() => openPanel("reservation")} />}
+        {panel === "contact" && <ContactPanel settings={data.settings} onReserve={() => openPanel("reservation")} />}
         {panel === "feedback" && <FeedbackPanel />}
       </div>
     </dialog>

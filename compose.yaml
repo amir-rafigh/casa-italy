@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: casa
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:?Run pnpm local:setup first}
+      POSTGRES_DB: casa_local
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - casa_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U casa -d casa_local"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  compatibility:
+    profiles: ["compatibility"]
+    image: postgres:10.23-alpine
+    environment:
+      POSTGRES_USER: casa
+      POSTGRES_PASSWORD: ${LOCAL_DB_PASSWORD:?Run pnpm local:setup first}
+      POSTGRES_DB: casa_compat
+    ports:
+      - "127.0.0.1:55433:5432"
+    volumes:
+      - casa_compat:/var/lib/postgresql/data
+volumes:
+  casa_db:
+  casa_compat:

@@ -1,0 +1,56 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+test('customer booking, admin decision, cancellation and persistent menu edit',async({browser,page})=>{
+ const credentials=readFileSync('tmp/local-admin.txt','utf8');
+ const username=credentials.match(/Username: (.+)/)![1],password=credentials.match(/Password: (.+)/)![1];
+ await page.goto('/');await expect(page.getByText('قیمت آزمایشی').first()).toBeVisible();
+ await page.goto('/reservations');
+ await page.getByLabel('نام و نام خانوادگی').fill('مهمان تست مرورگر');await page.getByLabel('شماره موبایل').fill('09120000000');
+ const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+2);const day=tomorrow.toISOString().slice(0,10);
+ await page.getByLabel('تاریخ',{exact:true}).fill(day);
+ const slots=page.getByLabel('ساعت حضور');await expect(slots).toBeEnabled();
+ await expect(slots.locator('option')).not.toHaveCount(1);
+ const value=await slots.locator('option:not([disabled])').nth(1).getAttribute('value');await slots.selectOption(value!);
+ await page.getByRole('button',{name:'ثبت درخواست رزرو',exact:true}).click();await expect(page.getByRole('status').filter({hasText:'درخواست در سامانه ثبت شد'})).toBeVisible();
+ await page.reload();await expect(page.getByText('مهمان تست مرورگر ·')).toBeVisible();
+ const admin=await browser.newContext();const panel=await admin.newPage();await panel.goto('/admin');await expect(panel).toHaveURL(/login/);
+ await panel.getByLabel('نام کاربری').fill(username);await panel.getByLabel('گذرواژه',{exact:true}).fill(password);await panel.getByRole('button',{name:'ورود',exact:true}).click();await expect(panel.getByRole('heading',{name:'مدیریت کازا ایتالی'})).toBeVisible();
+ const row=panel.getByRole('row').filter({hasText:'مهمان تست مرورگر'}).first();await row.getByRole('button',{name:'تأیید',exact:true}).click();await expect(row.getByText('تأیید شده',{exact:true}).first()).toBeVisible();
+ await page.getByRole('button',{name:'تازه‌سازی وضعیت'}).click();await expect(page.getByText('تأیید شده',{exact:true})).toBeVisible();
+ await page.getByRole('button',{name:'لغو درخواست',exact:true}).click();await expect(page.getByText('لغو شده',{exact:true})).toBeVisible();
+ await panel.getByRole('button',{name:'محصولات',exact:true}).click();const product=panel.getByRole('row').filter({hasText:'میت‌بال'}).first();await product.getByRole('button',{name:'ویرایش'}).click();
+ const price=panel.getByLabel('قیمت آزمایشی (تومان)');const original=await price.inputValue();await price.fill('567000');await panel.getByRole('button',{name:'ذخیره',exact:true}).click();await expect(panel.getByRole('status')).toHaveText('تغییرات ذخیره شد.');
+ await page.goto('/');await expect(page.getByText('۵۶۷٬۰۰۰ تومان').first()).toBeVisible();
+ await product.getByRole('button',{name:'ویرایش'}).click();await panel.getByLabel('قیمت آزمایشی (تومان)').fill(original);await panel.getByRole('button',{name:'ذخیره',exact:true}).click();await expect(panel.getByRole('status')).toBeVisible();
+ await panel.screenshot({path:'tmp/admin-menu.png',fullPage:true});
+ await admin.close();
+});
+test('public endpoints reject private data and cross-origin mutations',async({request,page})=>{
+ expect((await request.get('/api/admin/reservations')).status()).toBe(401);
+ expect((await request.post('/api/reservations/session',{headers:{origin:'https://untrusted.example'}})).status()).toBe(403);
+ const menu=await (await request.get('/api/menu')).json();expect(menu.products.length).toBe(7);expect(JSON.stringify(menu)).not.toContain('password_hash');
+ await page.setViewportSize({width:390,height:844});await page.goto('/landing');await page.getByRole('button',{name:'رزرو میز',exact:true}).click();await expect(page.getByLabel('نام و نام خانوادگی')).toBeVisible();
+ await page.screenshot({path:'tmp/reservation-mobile.png',fullPage:true});
+});
+test('category/product CRUD, settings, staff permissions and session revocation',async({browser})=>{
+ const text=readFileSync('tmp/local-admin.txt','utf8'),password=text.match(/Password: (.+)/)![1];
+ const admin=await browser.newContext(),page=await admin.newPage();await page.goto('/admin/login');await page.getByLabel('نام کاربری').fill(text.match(/Username: (.+)/)![1]);await page.getByLabel('گذرواژه',{exact:true}).fill(password);await page.getByRole('button',{name:'ورود',exact:true}).click();await expect(page.getByRole('heading',{name:'مدیریت کازا ایتالی'})).toBeVisible();
+ const post=(resource:string,data:unknown)=>admin.request.post(`/api/admin/${resource}`,{headers:{origin:'http://localhost:3000'},data});
+ const qr=await admin.request.get('/api/qr');expect(qr.status()).toBe(200);expect(qr.headers()['content-type']).toContain('image/svg+xml');expect(await qr.text()).toContain('<svg');
+ const suffix=Date.now(),id=`test-${suffix}`;
+ expect((await post('categories',{id,name:'دسته تست',sort_order:99,active:true})).ok()).toBeTruthy();
+ const product={id,category_id:id,name:'محصول تست',english_name:'TEST',description:'فقط تست خودکار',ingredients:'پنیر، گوجه',image:'pesto',price_toman:400000,sort_order:99,active:true,available:false};
+ expect((await post('menu',product)).ok()).toBeTruthy();
+ let menu=await (await admin.request.get('/api/menu')).json();expect(menu.products.find((p:{id:string})=>p.id===id).available).toBe(false);
+ expect((await post('categories',{id,remove:true})).status()).toBe(409);
+ expect((await post('menu',{...product,active:false})).ok()).toBeTruthy();menu=await (await admin.request.get('/api/menu')).json();expect(menu.products.find((p:{id:string})=>p.id===id)).toBeUndefined();
+ // Move archived fixture to a normal category, then remove only its temporary category.
+ expect((await post('menu',{...product,category_id:'meat',active:false})).ok()).toBeTruthy();expect((await post('categories',{id,remove:true})).ok()).toBeTruthy();
+ const settings=await (await admin.request.get('/api/admin/settings')).json();expect((await post('settings',{...settings,slot_times:settings.slot_times.join(',')})).ok()).toBeTruthy();
+ const username=`staff-${suffix}`,staffPassword=`test-local-password-${suffix}`;
+ expect((await post('users',{username,password:staffPassword,role:'staff',active:true})).ok()).toBeTruthy();
+ const staff=await browser.newContext(),staffPage=await staff.newPage();await staffPage.goto('/admin/login');await staffPage.getByLabel('نام کاربری').fill(username);await staffPage.getByLabel('گذرواژه',{exact:true}).fill(staffPassword);await staffPage.getByRole('button',{name:'ورود',exact:true}).click();await expect(staffPage.getByRole('heading',{name:'مدیریت کازا ایتالی'})).toBeVisible();
+ expect((await staff.request.get('/api/admin/settings')).status()).toBe(403);expect((await staff.request.get('/api/admin/reservations')).status()).toBe(200);
+ expect((await post('users',{username,role:'staff',active:false,password:''})).ok()).toBeTruthy();expect((await staff.request.get('/api/admin/reservations')).status()).toBe(401);
+ await staff.close();await admin.close();
+});

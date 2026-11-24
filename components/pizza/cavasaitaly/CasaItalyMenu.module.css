@@ -107,3 +107,4 @@
 }
 @media (max-width: 359px) { .header { padding-inline: 17px; }.nav { gap: 15px; }.intro h1 { font-size: 33px; }.categories button { padding-inline: 9px; }.stage { height: 255px; }.details { min-height: 180px; }.footer { justify-content: center; }.demoNote { display: none; } }
 @media (prefers-reduced-motion: reduce) { .page *, .page *::after { animation: none; transition: none; } }
+.price { margin: 10px 0; color: var(--gold); font-size: 15px; }.price small { font-size: 10px; }.price strong { color: #a23b35; }
