@@ -51,7 +51,7 @@ export function CasaLanding({ initialData }: { initialData: MenuData }) {
           <span className={styles.brandDivider} />
           <span className={styles.wordmark} lang="en" dir="ltr">CASA ITALY<span className={styles.tricolor} aria-hidden="true"><i /><i /><i /></span></span>
         </a>
-        <Link href="/" className={styles.headerMenu}><LandingIcon name="menu" size={17} />منو</Link>
+        <Link href="/Menu" className={styles.headerMenu}><LandingIcon name="menu" size={17} />منو</Link>
       </div>
     </header>
 
@@ -63,7 +63,7 @@ export function CasaLanding({ initialData }: { initialData: MenuData }) {
         <p className={styles.greeting}>به کازا خوش آمدید</p>
         <h1 id="casa-title">یک برش از ایتالیا،<br />سر میز شما.</h1>
         <p className={styles.subtitle}>طعم‌های ایتالیایی، لحظه‌های به‌یادماندنی</p>
-        <Link className={styles.mainCta} href="/"><LandingIcon name="menu" size={23} />مشاهده منو</Link>
+        <Link className={styles.mainCta} href="/Menu"><LandingIcon name="menu" size={23} />مشاهده منو</Link>
       </section>
 
       <section className={styles.selection} aria-labelledby="casa-selection-title">
